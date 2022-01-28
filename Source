@@ -1,0 +1,371 @@
+#include<cstdlib>
+#include <iostream>
+#include <string>
+#include <conio.h>
+
+using namespace std;
+
+int Menu() 
+{
+	int userInput;
+
+	cout << "\n--------------------------------------------";
+	cout << "\n\t      CONVERTER MENU";
+	cout << "\n--------------------------------------------";
+	cout << "\n1. Convert Decimal";
+	cout << "\n2. Convert Binary";
+	cout << "\n3. Convert Octal";
+	cout << "\n4. Convert HexaDecimal";
+	cout << "\n5. Exit Converter";
+	cout << "\n--------------------------------------------";
+	cout << "\n Enter the number of your choice: ";
+	cin >> userInput;
+
+	return userInput;
+}
+
+int Decimal;
+int Binary[50]; int binarytop = 0;
+int Octal[50]; int octaltop = 0;
+int HexaDecimal[50]; int hexadecimaltop = 0;
+
+//Decleration of the functions
+void DecimalConversion(int _decimal);
+void BinaryConvertion(string _binary);
+void OctalConvertion(string _octal);
+void HexaConversion(string _hexa);
+
+int Display();
+
+int main()
+{
+
+	int c;
+	string u_Input;
+
+	
+	c = Menu();
+
+	while (true)
+	{
+
+		switch (c)
+		{
+		case 1:
+			u_Input.clear();
+			int _decimal;
+
+			cout << " Enter a Decimal: ";
+			cin >> _decimal;
+			cout << "--------------------------------------------\n";
+
+			DecimalConversion(_decimal);
+
+			c = Display();
+			cout << "--------------------------------------------\n";
+			system("PAUSE");
+			system("CLS");
+			break;
+
+		case 2:
+			u_Input.clear();
+			cout << " Enter a Binary: ";
+			cin >> u_Input;
+			cout << "--------------------------------------------\n";
+
+			BinaryConvertion(u_Input);
+			DecimalConversion(Decimal);
+
+			c = Display();
+			cout << "--------------------------------------------\n";
+			system("PAUSE");
+			system("CLS");
+			break;
+
+		case 3:
+			u_Input.clear();
+			cout << " Enter A Octal: ";
+			cin >> u_Input;
+			cout << "--------------------------------------------\n";
+
+			OctalConvertion(u_Input);
+			DecimalConversion(Decimal);
+
+			c = Display();
+			cout << "--------------------------------------------\n";
+			system("PAUSE");
+			system("CLS");
+			break;
+
+		case 4:
+			u_Input.clear();
+			cout << " Enter A Hexa: ";
+			cin >> u_Input;
+			cout << "--------------------------------------------\n";
+
+			HexaConversion(u_Input);
+			DecimalConversion(Decimal);
+
+			c = Display();
+			cout << "--------------------------------------------\n";
+			system("PAUSE");
+			system("CLS");
+			break;
+
+		case 5:
+			system("CLS");
+			cout << "\n---------------------------------------------------------";
+			cout << "\nThank you for using The convertion of number system";
+			cout << "\n---------------------------------------------------------" << endl;
+			system("PAUSE");
+			return 0;
+
+		case 0:
+			c = Menu();
+			break;
+
+		default:
+			cout << "\n--------------------------------------------" << endl;
+			cout << " Invalid Input!" << endl;
+
+			system("PAUSE");
+			c = Menu();
+			break;
+		}
+	}
+}
+
+//Function Definition 
+void DecimalConversion(int _decimal)
+{
+	int currentValue = _decimal;
+
+	Decimal = currentValue;
+	binarytop = 0;
+	octaltop = 0;
+	hexadecimaltop = 0;
+
+	//Binary
+	while (currentValue > 0)
+	{
+
+
+		int prevValue = currentValue;
+		int currentRem = 0;
+
+		currentValue = currentValue / 2;
+		currentRem = prevValue - (currentValue * 2);
+
+		Binary[binarytop] = currentRem;
+		binarytop++;
+	}
+	//Octal
+	currentValue = _decimal;
+	while (currentValue > 0)
+	{
+		int prevValue = currentValue;
+		int currentRem = 0;
+
+		currentValue = currentValue / 8;
+		currentRem = prevValue - (currentValue * 8);
+
+		Octal[octaltop] = currentRem;
+		octaltop++;
+	}
+
+	//Hexadecimal
+	currentValue = _decimal;
+	while (currentValue > 0)
+	{
+		int prevValue = currentValue;
+		int currentRem = 0;
+
+		currentValue = currentValue / 16;
+		currentRem = prevValue - (currentValue * 16);
+
+		HexaDecimal[hexadecimaltop] = currentRem;
+		hexadecimaltop++;
+	}
+}
+//Convert only Octal to Decimal
+void OctalConvertion(std::string _octal)
+{
+	int dec[50]; int decimaltop = 0, _value = 0;
+
+	for (int i = 0; i < _octal.size(); i++)
+	{
+		if (i == 0)
+		{
+			dec[i] = 1;
+			decimaltop++;
+		}
+		else
+		{
+			dec[i] = (dec[i - 1] * 8);
+			decimaltop++;
+		}
+	}
+
+	for (int i = decimaltop - 1; i > -1; i--)
+	{
+		Octal[octaltop] = _octal[i] - '0';
+		octaltop++;
+	}
+
+	for (int i = decimaltop - 1; i > -1; i--)
+	{
+
+		_value += dec[i] * Octal[i];
+	}
+
+	Decimal = _value;
+}
+//Convert only Binary to Decimal
+void BinaryConvertion(std::string _binary)
+{
+	//100001101
+	int dec[50]; int decimaltop = 0, _value = 0;
+
+	//			1			9
+	for (int i = 0; i < _binary.size(); i++)
+	{
+		if (i == 0)
+		{
+			dec[i] = 1;
+			decimaltop++;
+		}
+		else {		//	1-1	* 2
+			dec[i] = (dec[i - 1] * 2);
+			decimaltop++;
+		}
+	}
+	for (int i = decimaltop - 1; i > -1; i--)
+	{
+		//		0			1
+		Binary[binarytop] = _binary[i] - '0';
+		binarytop++;
+	}
+	for (int i = binarytop - 1; i > -1; i--)
+	{
+		//49 in asci code is 1 and 48 means 0
+		if (Binary[i] == 1)
+		{
+			_value += dec[i];
+		}
+	}
+
+	Decimal = _value;
+}
+void HexaConversion(std::string _hexa)
+{
+	int dec[50]; int decimaltop = 0, _value = 0;
+
+	for (int i = 0; i < _hexa.size(); i++)
+	{
+		if (i == 0)
+		{
+			dec[i] = 1;
+			decimaltop++;
+		}
+		else {		//	1-1	* 2
+			dec[i] = (dec[i - 1] * 16);
+			decimaltop++;
+		}
+	}
+	for (int i = decimaltop - 1; i > -1; i--)
+	{
+		//		0			1
+		switch (_hexa[i])
+		{
+		case 'A':
+			HexaDecimal[hexadecimaltop] = 10;
+			break;
+		case 'B':
+			HexaDecimal[hexadecimaltop] = 11;
+			break;
+		case 'C':
+			HexaDecimal[hexadecimaltop] = 12;
+			break;
+		case 'D':
+			HexaDecimal[hexadecimaltop] = 13;
+			break;
+		case 'E':
+			HexaDecimal[hexadecimaltop] = 14;
+			break;
+		case 'F':
+			HexaDecimal[hexadecimaltop] = 15;
+			break;
+		default:
+			HexaDecimal[hexadecimaltop] = _hexa[i] - '0';
+			break;
+
+		}
+		hexadecimaltop++;
+	}
+
+	for (int i = decimaltop - 1; i > -1; i--)
+	{
+		_value += dec[i] * HexaDecimal[i];
+	}
+
+	Decimal = _value;
+
+}
+
+int Display()
+{
+	//display for deciaml
+	cout << "\n Decimal: " << Decimal;
+	Decimal = 0;
+
+	//display for binary
+	cout << "\n Binary: ";
+	for (int b = binarytop - 1; b > -1; b--)
+	{
+		cout << Binary[b];
+
+		binarytop--;
+	}
+
+	//display for Octal
+	cout << "\n Octal: ";
+	for (int o = octaltop - 1; o > -1; o--)
+	{
+		cout << Octal[o];
+
+		octaltop--;
+	}
+	//display for Hexadecimal
+	cout << "\n Hexadecimal: ";
+	for (int h = hexadecimaltop - 1; h > -1; h--)
+	{
+		switch (HexaDecimal[h])
+		{
+		case 10:
+			cout << 'A';
+			break;
+		case 11:
+			cout << 'B';
+			break;
+		case 12:
+			cout << 'C';
+			break;
+		case 13:
+			cout << 'D';
+			break; 
+		case 14:
+			cout << 'E';
+			break;
+		case 15:
+			cout << 'F';
+			break;
+		default:
+			cout << HexaDecimal[h];
+			break;
+		}
+		hexadecimaltop--;
+	}
+	cout << "\n";
+
+	return 0;
+}
